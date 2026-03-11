@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --gold: #d4af37; --dark-bg: #0b0f1a; --card-bg: #161d2f; }
-        body { background-color: var(--dark-bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--dark-bg); color: white; font-family: sans-serif; margin: 0; }
         .gold-gradient { background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .panel-glass { background: rgba(22, 29, 47, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); }
-        .btn-gold { background: linear-gradient(180deg, #d4af37 0%, #8a6d3b 100%); color: black; font-weight: bold; transition: 0.3s; }
-        .btn-gold:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        .btn-gold { background: linear-gradient(180deg, #d4af37 0%, #8a6d3b 100%); color: black; font-weight: bold; }
     </style>
 </head>
 <body class="pb-20">
@@ -22,7 +21,7 @@
             <h1 class="text-4xl font-black tracking-tighter">CASINO <span class="gold-gradient">LA</span></h1>
         </div>
         <p class="text-xs tracking-[0.3em] uppercase text-gray-400">Apuestas Libres • Cajeros 24/7</p>
-        <p class="text-[10px] text-yellow-700 mt-1 uppercase">Lucila Agustina • Gestión Oficial</p>
+        <p class="text-[10px] text-yellow-700 mt-1 uppercase font-bold">Lucila Agustina • Gestión Oficial</p>
     </header>
 
     <div class="bg-black/40 py-2 flex justify-center gap-6 text-[10px] text-gray-500 uppercase font-bold tracking-widest">
@@ -32,134 +31,61 @@
     </div>
 
     <div class="max-w-md mx-auto mt-6 px-4">
-        <div class="panel-glass p-6 rounded-3xl text-center shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-2 opacity-20"><i class="fas fa-crown text-4xl"></i></div>
+        <div class="panel-glass p-6 rounded-3xl text-center shadow-2xl">
             <p class="text-gray-400 text-sm mb-1">Créditos Disponibles</p>
             <h2 class="text-5xl font-mono font-bold text-yellow-500" id="displayBalance">0.00</h2>
         </div>
     </div>
 
-    <div class="flex justify-center gap-4 mt-8 px-4">
-        <button onclick="showTab('juegos')" id="btnJuegos" class="flex-1 py-3 rounded-xl btn-gold">
-            <i class="fas fa-gamepad mr-2"></i>JUGAR
-        </button>
-        <button onclick="showTab('admin')" id="btnAdmin" class="flex-1 py-3 rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition">
-            <i class="fas fa-user-shield mr-2"></i>ADMIN
-        </button>
+    <div class="flex justify-center gap-4 mt-8 px-4 max-w-md mx-auto">
+        <button onclick="showTab('juegos')" id="btnJuegos" class="flex-1 py-3 rounded-xl btn-gold">JUGAR</button>
+        <button onclick="showTab('admin')" id="btnAdmin" class="flex-1 py-3 rounded-xl bg-slate-800 border border-slate-700">ADMIN</button>
     </div>
 
-    <section id="tabJuegos" class="max-w-md mx-auto mt-8 px-4 space-y-4">
-        <div class="panel-glass p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-slate-800 transition">
-            <div class="w-20 h-20 bg-red-900 rounded-lg flex items-center justify-center text-3xl shadow-lg">🎲</div>
-            <div>
-                <h3 class="font-bold text-lg">DADOS ROYAL</h3>
-                <p class="text-xs text-gray-400">Multiplica x2 si sacas +3</p>
-                <div class="mt-2 flex gap-2">
-                    <input type="number" id="betDice" placeholder="Apuesta" class="w-20 bg-black/50 border border-slate-700 rounded px-2 text-sm text-yellow-500">
-                    <button onclick="playDice()" class="bg-yellow-600 text-xs px-3 py-1 rounded font-bold">APOSTAR</button>
-                </div>
+    <section id="tabJuegos" class="max-w-md mx-auto mt-8 px-4">
+        <div class="panel-glass p-4 rounded-2xl flex items-center gap-4">
+            <div class="text-4xl">🎲</div>
+            <div class="flex-1">
+                <h3 class="font-bold">DADOS ROYAL</h3>
+                <input type="number" id="betDice" placeholder="Apuesta" class="w-full bg-black/50 border border-slate-700 rounded p-2 mt-2 text-yellow-500">
+                <button onclick="playDice()" class="w-full bg-yellow-600 mt-2 py-2 rounded font-bold">APOSTAR</button>
             </div>
         </div>
-        <p id="gameMsg" class="text-center text-sm font-bold"></p>
+        <p id="gameMsg" class="text-center mt-4 font-bold"></p>
     </section>
 
     <section id="tabAdmin" class="hidden max-w-md mx-auto mt-8 px-4">
         <div class="panel-glass p-6 rounded-2xl border-l-4 border-yellow-500">
-            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
-                <i class="fas fa-cash-register text-yellow-500"></i> Panel de Carga
-            </h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs text-gray-400 uppercase">Monto a Cargar (Fichas)</label>
-                    <input type="number" id="loadAmount" class="w-full bg-black/50 border border-yellow-900/50 p-3 rounded-lg mt-1 text-yellow-400 font-mono" placeholder="Ej: 5000">
-                </div>
-                <button onclick="adminLoad()" class="w-full bg-green-700 hover:bg-green-600 py-3 rounded-lg font-bold transition">
-                    CONFIRMAR CARGA
-                </button>
-                <hr class="border-slate-700">
-                <button onclick="resetSystem()" class="w-full text-xs text-red-500 opacity-50 hover:opacity-100 transition">
-                    Reiniciar Sistema de Cero
-                </button>
-            </div>
+            <h3 class="text-xl font-bold mb-4">Panel de Cajero</h3>
+            <input type="number" id="loadAmount" class="w-full bg-black/50 border border-slate-700 p-3 rounded-lg" placeholder="Monto a cargar">
+            <button onclick="adminLoad()" class="w-full bg-green-700 mt-4 py-3 rounded-lg font-bold">CARGAR FICHAS</button>
         </div>
     </section>
 
-    <footer class="fixed bottom-0 w-full bg-slate-900 border-t border-yellow-900/30 p-4 flex justify-around text-gray-500">
-        <div class="text-center"><i class="fas fa-home block text-yellow-600"></i><span class="text-[10px]">Inicio</span></div>
-        <div class="text-center"><i class="fas fa-history block"></i><span class="text-[10px]">Movimientos</span></div>
-        <div class="text-center"><i class="fas fa-headset block"></i><span class="text-[10px]">Soporte</span></div>
-    </footer>
-
     <script>
-        // LÓGICA DE PERSISTENCIA (Base de Datos Local)
-        let balance = parseFloat(localStorage.getItem('casino_balance')) || 0;
-
+        let balance = parseFloat(localStorage.getItem('casino_la_bal')) || 0;
         function updateDisplay() {
             document.getElementById('displayBalance').innerText = balance.toFixed(2);
-            localStorage.setItem('casino_balance', balance);
+            localStorage.setItem('casino_la_bal', balance);
         }
-
-        // CAMBIO DE PESTAÑAS
         function showTab(tab) {
             document.getElementById('tabJuegos').classList.toggle('hidden', tab !== 'juegos');
             document.getElementById('tabAdmin').classList.toggle('hidden', tab !== 'admin');
-            
-            // Estilo de botones
-            const btnJ = document.getElementById('btnJuegos');
-            const btnA = document.getElementById('btnAdmin');
-            if(tab === 'juegos') {
-                btnJ.className = "flex-1 py-3 rounded-xl btn-gold";
-                btnA.className = "flex-1 py-3 rounded-xl bg-slate-800 border border-slate-700";
-            } else {
-                btnA.className = "flex-1 py-3 rounded-xl btn-gold";
-                btnJ.className = "flex-1 py-3 rounded-xl bg-slate-800 border border-slate-700";
-            }
         }
-
-        // FUNCIÓN DEL CAJERO (ADMIN)
         function adminLoad() {
             const amount = parseFloat(document.getElementById('loadAmount').value);
-            if(amount > 0) {
-                balance += amount;
-                updateDisplay();
-                document.getElementById('loadAmount').value = '';
-                alert("CARGA EXITOSA: Fichas acreditadas por Lucila Agustina");
-            }
+            if(amount > 0) { balance += amount; updateDisplay(); alert("Carga Exitosa"); }
         }
-
-        // LÓGICA DE JUEGO (Simulador)
         function playDice() {
             const bet = parseFloat(document.getElementById('betDice').value);
-            const msg = document.getElementById('gameMsg');
-            
-            if(isNaN(bet) || bet <= 0 || bet > balance) {
-                msg.innerText = "❌ Saldo insuficiente o monto inválido";
-                msg.className = "text-center text-sm font-bold text-red-500 mt-2";
-                return;
-            }
-
-            const roll = Math.floor(Math.random() * 6) + 1;
-            if(roll > 3) {
-                balance += bet;
-                msg.innerText = `🎲 Sacaste ${roll}: ¡GANASTE! +$${bet}`;
-                msg.className = "text-center text-sm font-bold text-green-500 mt-2";
-            } else {
-                balance -= bet;
-                msg.innerText = `🎲 Sacaste ${roll}: PERDISTE -$${bet}`;
-                msg.className = "text-center text-sm font-bold text-red-400 mt-2";
-            }
-            updateDisplay();
-        }
-
-        function resetSystem() {
-            if(confirm("¿Seguro que quieres borrar todo el saldo?")) {
-                balance = 0;
+            if(bet > 0 && bet <= balance) {
+                const win = Math.random() > 0.5;
+                balance = win ? balance + bet : balance - bet;
+                document.getElementById('gameMsg').innerText = win ? "¡GANASTE!" : "PERDISTE";
+                document.getElementById('gameMsg').className = win ? "text-green-500 text-center mt-4 font-bold" : "text-red-500 text-center mt-4 font-bold";
                 updateDisplay();
-                location.reload();
-            }
+            } else { alert("Saldo insuficiente"); }
         }
-
-        // Inicializar pantalla
         updateDisplay();
     </script>
 </body>
