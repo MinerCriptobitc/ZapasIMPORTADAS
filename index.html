@@ -1,110 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino LA | Oficial</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body { background-color: #050810; color: white; font-family: 'Segoe UI', sans-serif; }
-        .gold-text { background: linear-gradient(to bottom, #cf9f2d, #fff9aa, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; }
-        .btn-main { background: linear-gradient(180deg, #cf9f2d 0%, #7a5a0f 100%); color: black; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-    </style>
+
+<meta charset="UTF-8">
+<title>Casino Demo</title>
+<link rel="stylesheet" href="style.css">
+
 </head>
-<body class="min-h-screen flex flex-col items-center">
 
-    <header class="w-full max-w-md p-8 text-center">
-        <div class="border-2 border-yellow-600 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(207,159,45,0.3)]">
-            <span class="text-4xl font-black gold-text">LA</span>
-        </div>
-        <h1 class="text-2xl font-bold tracking-widest uppercase italic">Casino LA</h1>
-        <p class="text-[10px] text-gray-500 tracking-[0.4em] uppercase mt-2">Apuestas Libres • Cajeros 24/7</p>
-        <div class="flex justify-center gap-4 mt-4 text-[9px] font-bold text-yellow-800 uppercase tracking-widest">
-            <span>BT364</span> <span>•</span> <span>BETSON</span>
-        </div>
-        <p class="text-xs mt-3 text-yellow-600/70 font-semibold tracking-tighter">GESTIÓN: LUCILA AGUSTINA</p>
-    </header>
+<body>
 
-    <main class="w-full max-w-md px-6 space-y-6">
-        <div class="glass-card p-8 text-center shadow-2xl border-t-2 border-yellow-600/20">
-            <p class="text-gray-400 text-xs uppercase tracking-widest mb-2">Tu Crédito</p>
-            <h2 class="text-5xl font-mono font-bold gold-text" id="userBalance">0.00</h2>
-        </div>
+<div class="hero">
 
-        <div id="sectionJugar" class="space-y-4">
-            <div class="glass-card p-6">
-                <div class="flex items-center gap-4 mb-4">
-                    <span class="text-3xl">🎲</span>
-                    <h3 class="font-bold text-lg">DADOS ROYAL</h3>
-                </div>
-                <input type="number" id="inputApuesta" placeholder="¿Cuánto apuestas?" class="w-full bg-black/40 border border-white/10 p-3 rounded-lg mb-4 text-yellow-500 focus:outline-none focus:border-yellow-600">
-                <button onclick="jugarDados()" class="w-full btn-main py-4 rounded-xl active:scale-95 transition">Girar Dados</button>
-                <p id="msgJuego" class="text-center mt-4 text-sm font-bold h-4"></p>
-            </div>
-        </div>
+<h1>🎰 Casino Demo</h1>
 
-        <div id="sectionAdmin" class="hidden glass-card p-6 border-l-4 border-yellow-600">
-            <h3 class="font-bold text-yellow-600 mb-4 uppercase text-sm">Cargar Saldo (Panel de Cajero)</h3>
-            <input type="number" id="montoCarga" placeholder="Fichas a cargar" class="w-full bg-black/40 border border-white/10 p-3 rounded-lg mb-4 text-green-400">
-            <button onclick="cargarFichas()" class="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl uppercase text-xs tracking-widest">Confirmar Carga</button>
-        </div>
+<div class="buttons">
+<button onclick="showRegister()">Registrarse</button>
+<button onclick="showLogin()">Iniciar sesión</button>
+</div>
 
-        <div class="flex gap-4 pt-4">
-            <button onclick="cambiarPestaña('jugar')" class="flex-1 text-[10px] text-gray-500 uppercase font-bold border-b border-transparent hover:border-yellow-600 py-2 transition">Casino</button>
-            <button onclick="cambiarPestaña('admin')" class="flex-1 text-[10px] text-gray-500 uppercase font-bold border-b border-transparent hover:border-yellow-600 py-2 transition">Cajero</button>
-        </div>
-    </main>
+</div>
 
-    <script>
-        // Inicializar Saldo
-        let saldo = parseFloat(localStorage.getItem('casino_la_balance')) || 0;
-        document.getElementById('userBalance').innerText = saldo.toFixed(2);
 
-        function actualizarSaldo() {
-            document.getElementById('userBalance').innerText = saldo.toFixed(2);
-            localStorage.setItem('casino_la_balance', saldo);
-        }
+<div id="register" class="form hidden">
 
-        function cambiarPestaña(tipo) {
-            document.getElementById('sectionJugar').classList.toggle('hidden', tipo !== 'jugar');
-            document.getElementById('sectionAdmin').classList.toggle('hidden', tipo !== 'admin');
-        }
+<h2>Registro</h2>
 
-        function cargarFichas() {
-            const monto = parseFloat(document.getElementById('montoCarga').value);
-            if (monto > 0) {
-                saldo += monto;
-                actualizarSaldo();
-                document.getElementById('montoCarga').value = '';
-                alert("CARGA EXITOSA POR LUCILA AGUSTINA");
-            }
-        }
+<input type="text" id="regUser" placeholder="Usuario">
+<input type="email" id="regEmail" placeholder="Email">
+<input type="password" id="regPass" placeholder="Contraseña">
 
-        function jugarDados() {
-            const apuesta = parseFloat(document.getElementById('inputApuesta').value);
-            const msg = document.getElementById('msgJuego');
+<button onclick="register()">Crear cuenta</button>
 
-            if (isNaN(apuesta) || apuesta <= 0 || apuesta > saldo) {
-                msg.innerText = "Saldo insuficiente o apuesta inválida";
-                msg.className = "text-center mt-4 text-sm font-bold text-red-500";
-                return;
-            }
+</div>
 
-            // Lógica: 50% probabilidad
-            const gana = Math.random() > 0.5;
-            if (gana) {
-                saldo += apuesta;
-                msg.innerText = "¡GANASTE!";
-                msg.className = "text-center mt-4 text-sm font-bold text-green-500";
-            } else {
-                saldo -= apuesta;
-                msg.innerText = "CASA GANA";
-                msg.className = "text-center mt-4 text-sm font-bold text-red-400";
-            }
-            actualizarSaldo();
-        }
-    </script>
+
+<div id="login" class="form hidden">
+
+<h2>Login</h2>
+
+<input type="text" id="logUser" placeholder="Usuario">
+<input type="password" id="logPass" placeholder="Contraseña">
+
+<button onclick="login()">Entrar</button>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Casino Demo</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="hero">
+
+<h1>🎰 Casino Demo</h1>
+
+<div class="buttons">
+<button onclick="showRegister()">Registrarse</button>
+<button onclick="showLogin()">Iniciar sesión</button>
+</div>
+
+</div>
+
+
+<div id="register" class="form hidden">
+
+<h2>Registro</h2>
+
+<input type="text" id="regUser" placeholder="Usuario">
+<input type="email" id="regEmail" placeholder="Email">
+<input type="password" id="regPass" placeholder="Contraseña">
+
+<button onclick="register()">Crear cuenta</button>
+
+</div>
+
+
+<div id="login" class="form hidden">
+
+<h2>Login</h2>
+
+<input type="text" id="logUser" placeholder="Usuario">
+<input type="password" id="logPass" placeholder="Contraseña">
+
+<button onclick="login()">Entrar</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+</html>body{
+
+margin:0;
+font-family:Arial;
+background:black;
+color:white;
+
+}
+
+.hero{
+
+height:100vh;
+background:url('assets/casino-bg.jpg');
+background-size:cover;
+background-position:center;
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+
+}
+
+h1{
+
+font-size:70px;
+color:gold;
+text-shadow:0 0 25px red;
+
+}
+
+button{
+
+padding:15px 25px;
+margin:10px;
+font-size:18px;
+background:gold;
+border:none;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+
+}
+
+button:hover{
+
+background:red;
+color:white;
+
+}
+
+.form{
+
+background:#111;
+padding:30px;
+position:absolute;
+top:30%;
+left:40%;
+border-radius:10px;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+input{
+
+display:block;
+margin:10px;
+padding:10px;
+width:200px;
+
+}function showRegister(){
+
+document.getElementById("register").classList.remove("hidden")
+
+}
+
+function showLogin(){
+
+document.getElementById("login").classList.remove("hidden")
+
+}
+
+
+
+function register(){
+
+let user = document.getElementById("regUser").value
+let pass = document.getElementById("regPass").value
+
+localStorage.setItem(user, pass)
+
+alert("Usuario registrado")
+
+}
+
+
+
+function login(){
+
+let user = document.getElementById("logUser").value
+let pass = document.getElementById("logPass").value
+
+let saved = localStorage.getItem(user)
+
+if(saved === pass){
+
+alert("Bienvenido " + user)
+
+window.location.href="games/roulette.html"
+
+}else{
+
+alert("Datos incorrectos")
+
+}
+
+}<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Ruleta</title>
+
+<style>
+
+body{
+
+background:black;
+color:white;
+text-align:center;
+font-family:Arial;
+
+}
+
+button{
+
+padding:20px;
+font-size:20px;
+background:gold;
+border:none;
+border-radius:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🎡 Ruleta</h1>
+
+<p id="result">Presiona girar</p>
+
+<button onclick="spin()">Girar</button>
+
+<br><br>
+
+<a href="slot.html">
+<button>Ir a tragamonedas</button>
+</a>
+
+
+<script>
+
+function spin(){
+
+let number = Math.floor(Math.random()*37)
+
+document.getElementById("result").innerText =
+"Salió el número: " + number
+
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Tragamonedas</title>
+
+</head>
+
+<body style="background:black;color:white;text-align:center;font-family:Arial">
+
+<h1>🎰 Tragamonedas</h1>
+
+<p id="slot" style="font-size:50px">🍒 🍋 ⭐</p>
+
+<button onclick="spin()" style="padding:20px;font-size:20px">Girar</button>
+
+<br><br>
+
+<a href="roulette.html">
+<button>Volver a ruleta</button>
+</a>
+
+<script>
+
+let symbols = ["🍒","🍋","⭐","💎","7"]
+
+function spin(){
+
+let a = symbols[Math.floor(Math.random()*symbols.length)]
+let b = symbols[Math.floor(Math.random()*symbols.length)]
+let c = symbols[Math.floor(Math.random()*symbols.length)]
+
+document.getElementById("slot").innerText =
+a + " " + b + " " + c
+
+}
+
+</script>
+
+</body>
+</html>const express = require("express")
+
+const app = express()
+
+app.use(express.static(__dirname))
+
+app.listen(3000,()=>{
+
+console.log("Servidor corriendo en http://localhost:3000")
+
+})
